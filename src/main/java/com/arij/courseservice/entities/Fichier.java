@@ -13,12 +13,19 @@ import lombok.Setter;
 @Entity
 public class Fichier {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String url;
     private String name;
     @Lob
     private byte[] contenu;
     @ManyToOne(cascade = CascadeType.ALL)
     private Course course;
+
+
+
+    public Fichier(String name, String url, String id) {
+        this.name = name;
+        this.url = url;
+        this.id = id;
+    }
 }

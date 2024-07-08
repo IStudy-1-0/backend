@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface IFichierService {
 
-    List<Fichier> uploadFichierAndAffectToCourse(List<Fichier> fichier, Long idCourse) throws IOException;
+    List<Fichier> uploadFichierAndAffectToCourse(List<Fichier> fichiers, Long idCourse) throws IOException;
     Optional<Fichier> getOne(String idFichier);
     void  deleteFichierById(String idFichier );
 

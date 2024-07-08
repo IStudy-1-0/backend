@@ -32,7 +32,7 @@ public class CloudinaryService {
         File file = convert(multipartFile);
         Map result;
         try {
-            result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+             result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
             log.info("Upload result: " + result);
         } catch (Exception e) {
             log.error("Error uploading to Cloudinary: " + e.getMessage());

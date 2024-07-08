@@ -15,13 +15,17 @@ import java.time.LocalDate;
 @Entity
 public class Video {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String url;
     private String name;
-    private LocalDate duree;
-    private boolean isDone;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Course course;
+
+    public Video(String name, String url, String id) {
+        this.name = name;
+        this.url = url;
+        this.id = id;
+
+    }
 }

@@ -7,6 +7,7 @@ import com.arij.courseservice.repository.ICourseRepo;
 import com.arij.courseservice.repository.IFichierRepo;
 import com.arij.courseservice.repository.IImageRepo;
 import com.arij.courseservice.services.interfaces.IFichierService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,11 +58,12 @@ public class FichierService implements IFichierService {
 
     @Override
     public Optional<Fichier> getOne(String idFichier) {
-        return Optional.empty();
+        return fichierRepo.findById(idFichier);
     }
 
     @Override
+    @Transactional
     public void deleteFichierById(String idFichier) {
-
+     fichierRepo.deleteFichierById(idFichier);
     }
 }
