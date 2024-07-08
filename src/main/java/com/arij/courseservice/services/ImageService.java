@@ -1,71 +1,41 @@
 package com.arij.courseservice.services;
 
+import com.arij.courseservice.entities.Course;
 import com.arij.courseservice.entities.Image;
+import com.arij.courseservice.repository.ICourseRepo;
 import com.arij.courseservice.repository.IImageRepo;
-import com.arij.courseservice.services.interfaces.IFileUploadService;
 import com.arij.courseservice.services.interfaces.IImageService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import com.cloudinary.*;
-import com.cloudinary.utils.ObjectUtils;
-import io.github.cdimascio.dotenv.Dotenv;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Optional;
 
-import java.util.Map;
 @Slf4j
 @Service
 @AllArgsConstructor
 public class ImageService implements IImageService {
 
     private final IImageRepo imageRepository;
-    private final IFileUploadService fileUpload;
+    ICourseRepo courseRepo;
+
     @Override
-    public String uploadAndSaveImage(MultipartFile multipartFile) throws IOException {
-        String imageURL = fileUpload.uploadFile(multipartFile);
-        Image image = new Image();
-        image.setUrl(imageURL);
-        image.setName(multipartFile.getOriginalFilename());
-        imageRepository.save(image);
-        return imageURL;
+    public Image uploadImageAndAffectToCourse(Image image, Long idCourse) throws IOException {
+        Image img = imageRepository.save(image);
+        Course course = courseRepo.findCourseById(idCourse);
+        course.setCourseImage(img);
+        courseRepo.save(course);
+        return course.getCourseImage();
     }
-
+    @Transactional
     @Override
-    public Image deleteImage(Image img) {
-        return null;
+    public void deleteImageById(String idImage) {
+     imageRepository.deleteImageById(idImage);
     }
-
     @Override
-    public void deleteImageWithId(long id) {
-
-    }
-
-    @Override
-    public void deleteImageWithName(String name) {
-
-    }
-
-    @Override
-    public Image updateImage(Image img) {
-        return null;
-    }
-
-    @Override
-    public Image updateImageWithName(String name) {
-        return null;
-    }
-
-    @Override
-    public List<Image> getListImage() {
-        return null;
-    }
-
-    @Override
-    public Image getImageWithName(String name) {
-        return null;
+    public Optional<Image> getOne(String idImage){
+        return imageRepository.findById(idImage);
     }
 }

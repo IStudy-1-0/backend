@@ -11,14 +11,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class File {
+public class Fichier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
     private String name;
-    private boolean isDone;
-
-    @ManyToOne
-    private Seance seance;
+    @Lob
+    private byte[] contenu;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Course course;
 }

@@ -13,12 +13,17 @@ import lombok.Setter;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String url;
-    private  String name;
-    private boolean isDone;
+    private String name;
 
-    @ManyToOne
-    private Seance seance;
+
+    @OneToOne (mappedBy = "courseImage",cascade = CascadeType.ALL)
+    Course course;
+    public Image(String name, String imageUrl, String imageId) {
+        this.name = name;
+        this.url = imageUrl;
+        this.id = imageId;
+    }
+
 }

@@ -18,13 +18,13 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titleCourse;
-    @Enumerated(EnumType.STRING)
-    private LevelTypeCourse levelCourse;
+    private String courseName;
+    private Long idUser;
+
+   // @Enumerated(EnumType.STRING)
+    //private LevelTypeCourse levelCourse;
+
     private String description;
-    private LocalDate creationDate;
-    private LocalDate updatingDate;
-    private int learningLevel;
 
     @Enumerated(EnumType.STRING)
     private LanguageType language;
@@ -32,13 +32,14 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private TopicType topic;
 
-    @OneToMany(mappedBy = "course")
-    private List<Seance> seances;
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    private List<Video> videos;
 
-    @OneToOne(mappedBy = "course")
-    private Progression progression;
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    private List<Fichier> fichiers;
 
-    @ManyToOne
-    private User user;
+    @OneToOne (cascade = CascadeType.ALL)
+    Image courseImage;
+
 }
 

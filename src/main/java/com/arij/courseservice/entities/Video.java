@@ -22,6 +22,6 @@ public class Video {
     private LocalDate duree;
     private boolean isDone;
 
-    @ManyToOne
-    private Seance seance;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Course course;
 }
