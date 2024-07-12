@@ -11,6 +11,7 @@ import com.aziz.certificateservice.repositories.CertificatRepo;
 import com.aziz.certificateservice.repositories.QuestionRepo;
 import com.aziz.certificateservice.repositories.QuizRepo;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -25,15 +26,17 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class ServiceImpl implements IService {
-    CertificatRepo certificatRepo;
-    AnswerRepo answerRepo;
-    QuestionRepo questionRepo;
-    QuizRepo quizRepo;
-
+    private final CertificatRepo certificatRepo;
+    private final AnswerRepo answerRepo;
+    private final QuestionRepo questionRepo;
+    private final QuizRepo quizRepo;
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 
     @Override
     public Certificat ajouterCertificat(Certificat certificat) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = getAuthentication();
         Jwt jwt = (Jwt) authentication.getPrincipal();
         certificat.setCreatedBy(jwt.getClaimAsString("sub"));
         return certificatRepo.save(certificat);
@@ -51,9 +54,12 @@ public class ServiceImpl implements IService {
 
     @Override
     public Quiz ajouterQuiz(String titre, String description, List<QuestionDTO> questionsDTO) {
+        Authentication authentication = getAuthentication();
+        Jwt jwt = (Jwt) authentication.getPrincipal();
         Quiz quiz = new Quiz();
         quiz.setTitre(titre);
         quiz.setDescription(description);
+        quiz.setCreatedBy(jwt.getClaimAsString("sub"));
 
         List<Question> questions = new ArrayList<>();
 
@@ -91,15 +97,15 @@ public class ServiceImpl implements IService {
     }
 
 
-//    @Override
-//    public Quiz affecterCertificat(Long quizId, Long certificatId) {
-//        Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz non trouvé"));
-//        Certificat certificat = certificatRepo.findById(certificatId).orElseThrow(() -> new RuntimeException("Certificat non trouvé"));
-//
-//        quiz.setCertificat(certificat);
-//
-//        return quizRepo.save(quiz);
-//    }
+    @Override
+    public Quiz affecterCertificat(Long quizId, Long certificatId) {
+        Quiz quiz = quizRepo.findById(quizId).orElseThrow(() -> new RuntimeException("Quiz non trouvé"));
+        Certificat certificat = certificatRepo.findById(certificatId).orElseThrow(() -> new RuntimeException("Certificat non trouvé"));
+
+        quiz.setCertificat(certificat);
+
+        return quizRepo.save(quiz);
+    }
 
     @Override
     public Quiz getQuizById(Long quizId) {

@@ -2,6 +2,7 @@ package com.aziz.certificateservice.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -39,5 +40,15 @@ public class Quiz {
     public void setCertificat(Certificat certificat) {
         this.certificat = certificat;
     }
+    @Getter
+    @Setter
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Getter
+    @Setter
+    @Column(name = "passed_by")
+    @ElementCollection
+    private List<String> passedBy;
 
 }

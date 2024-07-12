@@ -41,7 +41,6 @@ public class RestController {
     List<Certificat> getcertificats() {
         return service.getCertficats();
     }
-    @CrossOrigin
     @GetMapping("/quizzs")
     List<Quiz> getquizzs() {return service.getQuizzs();}
 
@@ -51,7 +50,6 @@ public class RestController {
     }
 
 
-    @CrossOrigin
     @PostMapping("/calculerScore")
     public ResponseEntity<Map<String, Object>> calculerScoreQuiz(@RequestBody Map<String, Object> payload) {
         Long quizId = ((Number) payload.get("quizId")).longValue();
@@ -67,12 +65,11 @@ public class RestController {
 
         return ResponseEntity.ok(result);
     }
-//    @PostMapping("/{quizId}/certificat/{certificatId}")
-//    public ResponseEntity<Quiz> affecterCertificat(@PathVariable Long quizId, @PathVariable Long certificatId) {
-//        Quiz updatedQuiz = service.affecterCertificat(quizId, certificatId);
-//        return ResponseEntity.ok(updatedQuiz);
-//    }
-    @CrossOrigin
+    @PostMapping("/{quizId}/certificat/{certificatId}")
+    public ResponseEntity<Quiz> affecterCertificat(@PathVariable Long quizId, @PathVariable Long certificatId) {
+        Quiz updatedQuiz = service.affecterCertificat(quizId, certificatId);
+        return ResponseEntity.ok(updatedQuiz);
+    }
     @GetMapping("/quizzs/{quizId}")
     public ResponseEntity<Quiz> getQuizById(@PathVariable Long quizId) {
         Quiz quiz = service.getQuizById(quizId);
